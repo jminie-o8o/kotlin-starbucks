@@ -1,7 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">kotlin-starbucks</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="label_navigation_home">홈</string>
     <string name="label_navigation_pay">페이</string>
     <string name="label_navigation_order">주문</string>
