@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainEventFragment"
-        android:name="com.example.kotlin_starbucks.MainEventFragment"
+        android:name="com.example.kotlin_starbucks.ui.MainEventFragment"
         android:label="fragment_main_event"
         tools:layout="@layout/fragment_main_event" >
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.kotlin_starbucks.HomeFragment"
+        android:name="com.example.kotlin_starbucks.ui.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -27,22 +27,22 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_order"
-        android:name="com.example.kotlin_starbucks.OrderFragment"
+        android:name="com.example.kotlin_starbucks.ui.OrderFragment"
         android:label="fragment_order"
         tools:layout="@layout/fragment_order" />
     <fragment
         android:id="@+id/navigation_favorite"
-        android:name="com.example.kotlin_starbucks.FavoriteFragment"
+        android:name="com.example.kotlin_starbucks.ui.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite" />
     <fragment
         android:id="@+id/navigation_pay"
-        android:name="com.example.kotlin_starbucks.PayFragment"
+        android:name="com.example.kotlin_starbucks.ui.PayFragment"
         android:label="fragment_pay"
         tools:layout="@layout/fragment_pay" />
     <fragment
         android:id="@+id/whatsNewFragment"
-        android:name="com.example.kotlin_starbucks.WhatsNewFragment"
+        android:name="com.example.kotlin_starbucks.ui.WhatsNewFragment"
         android:label="fragment_whats_new"
         tools:layout="@layout/fragment_whats_new" />
 </navigation>
