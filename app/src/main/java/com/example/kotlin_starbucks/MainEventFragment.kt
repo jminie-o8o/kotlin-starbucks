@@ -20,6 +20,7 @@ class MainEventFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         val button = view.findViewById<Button>(R.id.btn_temp)
         button.setOnClickListener {
 //            val transaction = parentFragmentManager.beginTransaction()
@@ -28,5 +29,7 @@ class MainEventFragment : Fragment() {
 //            transaction.commit()
             findNavController().navigate(R.id.action_mainEventFragment_to_homeFragment)
         }
+
+
     }
 }
