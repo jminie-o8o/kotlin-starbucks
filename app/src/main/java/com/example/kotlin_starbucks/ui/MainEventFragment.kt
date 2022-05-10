@@ -6,28 +6,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.kotlin_starbucks.R
+import com.example.kotlin_starbucks.databinding.FragmentMainEventBinding
+import com.example.kotlin_starbucks.model.EventImage
 
 class MainEventFragment : Fragment() {
+
+    private lateinit var binding: FragmentMainEventBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_main_event, container, false)
+    ): View {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_event, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        val button = view.findViewById<Button>(R.id.btn_temp)
-        button.setOnClickListener {
-            findNavController().navigate(R.id.action_mainEventFragment_to_homeFragment)
-
+        with(binding) {
+            eventImage = EventImage()
+            btnTemp.setOnClickListener {
+                findNavController().navigate(R.id.action_mainEventFragment_to_homeFragment)
+            }
         }
-
-
     }
 }
