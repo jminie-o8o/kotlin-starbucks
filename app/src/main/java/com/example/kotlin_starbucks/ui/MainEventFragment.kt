@@ -1,4 +1,4 @@
-package com.example.kotlin_starbucks
+package com.example.kotlin_starbucks.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
+import com.example.kotlin_starbucks.R
 
 class MainEventFragment : Fragment() {
 
@@ -23,11 +24,8 @@ class MainEventFragment : Fragment() {
 
         val button = view.findViewById<Button>(R.id.btn_temp)
         button.setOnClickListener {
-//            val transaction = parentFragmentManager.beginTransaction()
-//            transaction.replace(R.id.nav_main_event_fragment, HomeFragment())
-//            transaction.addToBackStack(null)
-//            transaction.commit()
             findNavController().navigate(R.id.action_mainEventFragment_to_homeFragment)
+
         }
 
 
