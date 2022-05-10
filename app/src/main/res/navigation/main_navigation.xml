@@ -20,7 +20,11 @@
         android:id="@+id/navigation_home"
         android:name="com.example.kotlin_starbucks.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_whatsNewFragment"
+            app:destination="@id/whatsNewFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_order"
         android:name="com.example.kotlin_starbucks.OrderFragment"
@@ -36,4 +40,9 @@
         android:name="com.example.kotlin_starbucks.PayFragment"
         android:label="fragment_pay"
         tools:layout="@layout/fragment_pay" />
+    <fragment
+        android:id="@+id/whatsNewFragment"
+        android:name="com.example.kotlin_starbucks.WhatsNewFragment"
+        android:label="fragment_whats_new"
+        tools:layout="@layout/fragment_whats_new" />
 </navigation>
