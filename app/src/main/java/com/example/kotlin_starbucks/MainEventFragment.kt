@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.navigation.fragment.findNavController
 
 class MainEventFragment : Fragment() {
 
@@ -21,10 +22,11 @@ class MainEventFragment : Fragment() {
 
         val button = view.findViewById<Button>(R.id.btn_temp)
         button.setOnClickListener {
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.nav_main_event_fragment, HomeFragment())
-            transaction.addToBackStack(null)
-            transaction.commit()
+//            val transaction = parentFragmentManager.beginTransaction()
+//            transaction.replace(R.id.nav_main_event_fragment, HomeFragment())
+//            transaction.addToBackStack(null)
+//            transaction.commit()
+            findNavController().navigate(R.id.action_mainEventFragment_to_homeFragment)
         }
     }
 }
