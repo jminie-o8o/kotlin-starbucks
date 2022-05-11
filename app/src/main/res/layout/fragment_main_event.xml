@@ -9,6 +9,13 @@
             name="eventImage"
             type="com.example.kotlin_starbucks.model.EventImage" />
 
+        <variable
+            name="mainEventFragment"
+            type="com.example.kotlin_starbucks.ui.MainEventFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.example.kotlin_starbucks.ui.ViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,27 +24,90 @@
         android:layout_height="match_parent"
         tools:context=".ui.MainEventFragment">
 
-        <ImageView
-            android:id="@+id/iv_event"
-            imageUrl="@{eventImage.imageUrl}"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <ImageView
+                android:id="@+id/iv_event"
+                imageUrl="@{eventImage.imageUrl}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_marginTop="60dp"
+                android:id="@+id/tv_event_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@{viewModel.eventImageContents.title}"
+                tools:text="스타벅스" />
+
+            <TextView
+                android:id="@+id/tv_event_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="280dp"
+                android:text="@{viewModel.eventImageContents.range}"
+                tools:text="2021년 10월 11일 ~ 10월 22일" />
+
+            <TextView
+                android:id="@+id/tv_event_target"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_event_date"
+                android:layout_alignStart="@id/tv_event_date"
+                android:layout_marginTop="8dp"
+                android:text="@{viewModel.eventImageContents.target}"
+                tools:text="스타벅스트 리워드 회원" />
+
+            <TextView
+                android:id="@+id/tv_event_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_event_target"
+                android:layout_alignStart="@id/tv_event_target"
+                android:layout_marginTop="8dp"
+                android:text="@{viewModel.eventImageContents.description}"
+                tools:text="기간 내 오후 2시~6시 \n 등록된 카드로 주문시 영수증당 별추가 증정" />
+
+            <TextView
+                android:id="@+id/tv_event_products"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_event_description"
+                android:layout_alignStart="@id/tv_event_description"
+                android:layout_marginTop="16dp"
+                android:text="@{viewModel.eventImageContents.eventProducts}"
+                tools:text="스타벅스트 딜리버리 음료" />
+
+        </RelativeLayout>
 
 
-        <Button
-            android:id="@+id/btn_temp"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_close_a_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/item_green_button_modifier"
             android:stateListAnimator="@null"
-            android:text="닫기"
+            android:text="@string/do_not_look_a_day"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_close"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/item_white_green_stroke_button_modifier"
+            android:stateListAnimator="@null"
+            android:text="@string/close_event_page"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/btn_close_a_day" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

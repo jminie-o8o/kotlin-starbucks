@@ -8,6 +8,6 @@ import com.example.kotlin_starbucks.repository.module.GlideApp
 
 @BindingAdapter("imageUrl")
 fun setEventImageBitmap(view: ImageView, imageUrl: String?) {
-    Log.d("BindingAdapter", "$imageUrl")
-    Glide.with(view).load(imageUrl).into(view)
+    requireNotNull(imageUrl)
+    GlideApp.with(view).load(imageUrl).into(view)
 }
