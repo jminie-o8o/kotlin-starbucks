@@ -5,20 +5,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kotlin_starbucks.model.EventImageContents
+import com.example.kotlin_starbucks.model.HomeProducts
 import com.example.kotlin_starbucks.model.ImageException
 import com.example.kotlin_starbucks.repository.Repository
 import com.example.kotlin_starbucks.ui.common.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.Exception
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class ViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    private val _eventImage = MutableLiveData<EventImageContents>()
-    val eventImage: LiveData<EventImageContents> = _eventImage
+    private val _eventImageContents = MutableLiveData<EventImageContents>()
+    val eventImageContents: LiveData<EventImageContents> = _eventImageContents
+
+    private val _homeContents = MutableLiveData<HomeProducts>()
+    val homeContents: LiveData<HomeProducts> = _homeContents
 
     private val _error = SingleLiveEvent<ImageException>()
     val error: LiveData<ImageException> = _error
@@ -32,13 +37,27 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
 
     init {
         loadEventImageContents()
+        loadHomeContents()
     }
 
     fun loadEventImageContents() {
         viewModelScope.launch {
             repository.loadEventImageContents()?.let {
-                _eventImage.value = it
+                _eventImageContents.value = it
             }
         }
     }
+
+    private fun loadHomeContents() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.loadHomeContents()?.let {
+                    _homeContents.value = it
+                }
+            }
+
+
+        }
+    }
+
 }
