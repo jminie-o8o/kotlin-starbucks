@@ -2,6 +2,8 @@ package com.example.kotlin_starbucks.repository
 
 import com.example.kotlin_starbucks.model.EventImageContents
 import com.example.kotlin_starbucks.model.HomeProducts
+import com.example.kotlin_starbucks.model.ProductCd
+import com.example.kotlin_starbucks.model.YourRecommendProducts
 import com.example.kotlin_starbucks.network.RetrofitObject
 import retrofit2.Response
 import javax.inject.Inject
@@ -17,9 +19,12 @@ class RemoteDataSource @Inject constructor() : DataSource {
         return response.getBodyOrNull()
     }
 
+    override suspend fun loadStarbucksContents(productCd: ProductCd): YourRecommendProducts? {
+        val response = RetrofitObject.starBucksInfo.loadStarbucksContents(productCd)
+        return response.getBodyOrNull()
+    }
+
     private fun <T> Response<T>.getBodyOrNull(): T? {
         return if (this.isSuccessful) this.body() else null
     }
-
-
 }

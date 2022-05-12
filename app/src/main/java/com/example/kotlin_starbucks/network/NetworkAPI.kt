@@ -18,7 +18,7 @@ interface NetworkAPI {
     suspend fun loadHomeContents(): Response<HomeProducts>
 
     @POST("productViewAjax.do")
-    suspend fun loadStarbucksCont(
+    suspend fun loadStarbucksContents(
         @Body productCd: ProductCd
     ): Response<YourRecommendProducts>
 }

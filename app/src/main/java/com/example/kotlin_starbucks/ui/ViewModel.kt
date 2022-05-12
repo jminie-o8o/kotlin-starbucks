@@ -1,5 +1,6 @@
 package com.example.kotlin_starbucks.ui
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,13 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.kotlin_starbucks.model.EventImageContents
 import com.example.kotlin_starbucks.model.HomeProducts
 import com.example.kotlin_starbucks.model.ImageException
+import com.example.kotlin_starbucks.model.ProductCd
 import com.example.kotlin_starbucks.repository.Repository
 import com.example.kotlin_starbucks.ui.common.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +27,7 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
     private val _error = SingleLiveEvent<ImageException>()
     val error: LiveData<ImageException> = _error
 
-    private val ceh = CoroutineExceptionHandler {_, throwable ->
+    private val ceh = CoroutineExceptionHandler { _, throwable ->
         when (throwable) {
             is Exception -> _error.value = ImageException(throwable, "이미지를 불러올 수 없습니다.")
         }
@@ -40,7 +39,7 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
         loadHomeContents()
     }
 
-    fun loadEventImageContents() {
+    private fun loadEventImageContents() {
         viewModelScope.launch {
             repository.loadEventImageContents()?.let {
                 _eventImageContents.value = it
@@ -50,14 +49,17 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
 
     private fun loadHomeContents() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
+            val loadHomeContentsJob = launch {
                 repository.loadHomeContents()?.let {
                     _homeContents.value = it
                 }
             }
-
-
+            loadHomeContentsJob.join()
+            for (i in 0 until homeContents.value?.yourRecommend?.products?.size!!) {
+                launch {
+                    repository.loadStarbucksContents(ProductCd(homeContents.value?.yourRecommend?.products!![i]))
+                }
+            }
         }
     }
-
 }

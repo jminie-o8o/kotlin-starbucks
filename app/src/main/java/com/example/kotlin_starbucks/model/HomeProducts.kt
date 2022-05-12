@@ -5,14 +5,15 @@ import com.google.gson.annotations.SerializedName
 data class HomeProducts(
     @SerializedName("display-name")
     val displayName: String?,
-    @SerializedName("your-recommend")
-    val products: Products,
+    @SerializedName("your-recommand")
+    val yourRecommend: Products,
     @SerializedName("main-event")
     val mainEvent: MainEvent,
     @SerializedName("now-recommand")
     val nowRecommend: NowRecommend
 ) {
     data class Products(
+        @SerializedName("products")
         val products: List<String?>
     )
     data class MainEvent(

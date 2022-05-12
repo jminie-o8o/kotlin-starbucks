@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class YourRecommendProducts(
     @SerializedName("file")
-    val `file`: List<File>?
+    val file: List<File>?
 ) {
     data class File(
         @SerializedName("all_CATE_CD")

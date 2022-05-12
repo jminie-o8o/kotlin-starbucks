@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class ProductCd(
     @SerializedName("product_cd")
-    val productCd: String
+    val productCd: String?
 )
