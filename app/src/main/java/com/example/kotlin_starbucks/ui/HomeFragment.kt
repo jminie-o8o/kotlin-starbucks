@@ -31,7 +31,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.rvYourRecommend.adapter = HomeAdapter().apply {
-            viewModel.homeContentsDetail.observe(viewLifecycleOwner) {
+            viewModel.yourRecommendProducts.observe(viewLifecycleOwner) {
                 submitList(it)
             }
         }

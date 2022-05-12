@@ -1,9 +1,6 @@
 package com.example.kotlin_starbucks.repository
 
-import com.example.kotlin_starbucks.model.EventImageContents
-import com.example.kotlin_starbucks.model.HomeProducts
-import com.example.kotlin_starbucks.model.ProductCd
-import com.example.kotlin_starbucks.model.YourRecommendProducts
+import com.example.kotlin_starbucks.model.*
 
 interface DataSource {
 
@@ -11,5 +8,7 @@ interface DataSource {
 
     suspend fun loadHomeContents(): HomeProducts?
 
-    suspend fun loadStarbucksContents(productCd: Long?): YourRecommendProducts?
+    suspend fun loadStarbucksContents(productCd: Long?): YourRecommendProductsTitle?
+
+    suspend fun loadStarbucksImages(productCd: Long?): YourRecommendProductsImage?
 }
