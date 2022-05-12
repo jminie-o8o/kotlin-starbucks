@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainEventFragment : Fragment() {
 
     private lateinit var binding: FragmentMainEventBinding
-    private val viewModel: ViewModel by viewModels()
+    private val viewModel: ViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

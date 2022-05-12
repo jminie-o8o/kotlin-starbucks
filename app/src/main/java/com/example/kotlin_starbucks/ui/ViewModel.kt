@@ -42,12 +42,7 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
         _error.call()
     }
 
-    init {
-        loadEventImageContents()
-        loadHomeContents()
-    }
-
-    private fun loadEventImageContents() {
+    fun loadEventImageContents() {
         viewModelScope.launch {
             repository.loadEventImageContents()?.let {
                 _eventImageContents.value = it
@@ -55,7 +50,7 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
         }
     }
 
-    private fun loadHomeContents() {
+    fun loadHomeContents() {
         viewModelScope.launch {
             val loadHomeContentsJob = launch {
                 repository.loadHomeContents()?.let {
