@@ -65,13 +65,17 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
             loadHomeContentsJob.join()
             launch {
                 for (i in 0 until homeContents.value?.yourRecommend?.products?.size!!) {
-                    launch {
-                        val yourRecommendProducts = repository.loadStarbucksContents(homeContents.value?.yourRecommend?.products!![i]?.toLong())
+                    val job1 = async {
+                        val yourRecommendProducts =
+                            repository.loadStarbucksContents(homeContents.value?.yourRecommend?.products!![i]?.toLong())
                         yourRecommendProducts?.view?.let {
                             _homeContentsDetailList.add(it)
                             _homeContentsDetail.value = _homeContentsDetailList
                         }
-                        val recommendProductImage = repository.loadStarbucksImages(homeContents.value?.yourRecommend?.products!![i]?.toLong())
+                    }
+                    val job2 = async {
+                        val recommendProductImage =
+                            repository.loadStarbucksImages(homeContents.value?.yourRecommend?.products!![i]?.toLong())
                         if (!recommendProductImage?.file.isNullOrEmpty()) {
                             recommendProductImage?.file?.get(0)?.filePATH.let {
                                 if (it != null) {
@@ -81,6 +85,8 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
                             }
                         }
                     }
+                    job1.await()
+                    job2.await()
                 }
             }.join()
             makeProductsList()
@@ -93,7 +99,8 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
                 YourRecommendProducts(
                     _homeContentsDetail.value?.get(index)?.productNM,
                     _homeContentsDetailImage.value?.get(index)
-            ))
+                )
+            )
         }
         _yourRecommendProducts.value = _yourRecommendProductsList
     }
