@@ -11,5 +11,5 @@ interface DataSource {
 
     suspend fun loadHomeContents(): HomeProducts?
 
-    suspend fun loadStarbucksContents(productCd: ProductCd): YourRecommendProducts?
+    suspend fun loadStarbucksContents(productCd: Long?): YourRecommendProducts?
 }

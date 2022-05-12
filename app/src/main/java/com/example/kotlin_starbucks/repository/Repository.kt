@@ -15,7 +15,7 @@ class Repository @Inject constructor(private val dataSource: DataSource) {
         return dataSource.loadHomeContents()
     }
 
-    suspend fun loadStarbucksContents(productCd: ProductCd): YourRecommendProducts? {
+    suspend fun loadStarbucksContents(productCd: Long?): YourRecommendProducts? {
         return dataSource.loadStarbucksContents(productCd)
     }
 }

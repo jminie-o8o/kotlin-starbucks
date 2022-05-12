@@ -5,10 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kotlin_starbucks.model.EventImageContents
-import com.example.kotlin_starbucks.model.HomeProducts
-import com.example.kotlin_starbucks.model.ImageException
-import com.example.kotlin_starbucks.model.ProductCd
+import com.example.kotlin_starbucks.model.*
 import com.example.kotlin_starbucks.repository.Repository
 import com.example.kotlin_starbucks.ui.common.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +20,10 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
 
     private val _homeContents = MutableLiveData<HomeProducts>()
     val homeContents: LiveData<HomeProducts> = _homeContents
+
+    private val _homeContentsDetailList: MutableList<File> = mutableListOf()
+    private val _homeContentsDetail = MutableLiveData<MutableList<File>>()
+    val homeContentsDetail: LiveData<MutableList<File>> = _homeContentsDetail
 
     private val _error = SingleLiveEvent<ImageException>()
     val error: LiveData<ImageException> = _error
@@ -57,9 +58,17 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
             loadHomeContentsJob.join()
             for (i in 0 until homeContents.value?.yourRecommend?.products?.size!!) {
                 launch {
-                    repository.loadStarbucksContents(ProductCd(homeContents.value?.yourRecommend?.products!![i]))
+                    val yourRecommendProducts = repository.loadStarbucksContents(homeContents.value?.yourRecommend?.products!![i]?.toLong())
+                    yourRecommendProducts?.view?.let {
+                        _homeContentsDetailList.add(it)
+                        _homeContentsDetail.value = _homeContentsDetailList
+                    }
                 }
             }
         }
+    }
+
+    private fun <T> MutableLiveData<T>.notifyObserver() {
+        this.value = this.value
     }
 }

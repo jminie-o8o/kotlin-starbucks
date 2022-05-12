@@ -5,9 +5,7 @@ import com.example.kotlin_starbucks.model.HomeProducts
 import com.example.kotlin_starbucks.model.ProductCd
 import com.example.kotlin_starbucks.model.YourRecommendProducts
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface NetworkAPI {
 
@@ -17,8 +15,9 @@ interface NetworkAPI {
     @GET("starbuckst/")
     suspend fun loadHomeContents(): Response<HomeProducts>
 
+    @FormUrlEncoded
     @POST("productViewAjax.do")
     suspend fun loadStarbucksContents(
-        @Body productCd: ProductCd
+        @Field("product_cd") productCd: Long?
     ): Response<YourRecommendProducts>
 }

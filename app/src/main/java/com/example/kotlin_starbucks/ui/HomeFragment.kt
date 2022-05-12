@@ -23,19 +23,19 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
-        binding.btMoveToDetail.setOnClickListener {
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
+        binding.tvWhatNew.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_home_to_whatsNewFragment)
         }
 
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.homeContents.observe(viewLifecycleOwner) {
-            Log.d("HOME", it.toString())
+        binding.rvYourRecommend.adapter = HomeAdapter().apply {
+            viewModel.homeContentsDetail.observe(viewLifecycleOwner) {
+                submitList(it)
+            }
         }
+
+        return binding.root
     }
 }

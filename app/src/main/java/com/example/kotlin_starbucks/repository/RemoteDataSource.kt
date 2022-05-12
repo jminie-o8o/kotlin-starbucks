@@ -1,5 +1,6 @@
 package com.example.kotlin_starbucks.repository
 
+import android.util.Log
 import com.example.kotlin_starbucks.model.EventImageContents
 import com.example.kotlin_starbucks.model.HomeProducts
 import com.example.kotlin_starbucks.model.ProductCd
@@ -19,7 +20,7 @@ class RemoteDataSource @Inject constructor() : DataSource {
         return response.getBodyOrNull()
     }
 
-    override suspend fun loadStarbucksContents(productCd: ProductCd): YourRecommendProducts? {
+    override suspend fun loadStarbucksContents(productCd: Long?): YourRecommendProducts? {
         val response = RetrofitObject.starBucksInfo.loadStarbucksContents(productCd)
         return response.getBodyOrNull()
     }

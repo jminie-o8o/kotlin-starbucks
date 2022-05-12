@@ -9,4 +9,6 @@
     <string name="label_event_image">https://s3.ap-northeast-2.amazonaws.com/lucas-image.codesquad.kr/1627033273796event-bg.png</string>
     <string name="do_not_look_a_day">다시보지않기</string>
     <string name="close_event_page">닫기</string>
+    <string name="label_what_new">What\'s new</string>
+    <string name="your_recommend_title">%s 님을 위한 추천 메뉴</string>
 </resources>
