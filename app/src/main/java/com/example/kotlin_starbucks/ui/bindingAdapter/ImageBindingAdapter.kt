@@ -19,6 +19,7 @@ fun setRecommendImage(view: ImageView, imageUrl: String?) {
     if (!imageUrl.isNullOrEmpty()) {
         GlideApp.with(view)
             .load(RetrofitObject.baseImageUrl + imageUrl)
+            .centerCrop()
             .into(view)
     }
 }
