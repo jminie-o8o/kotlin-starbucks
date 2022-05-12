@@ -20,6 +20,9 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
     private val _homeContents = MutableLiveData<HomeProducts>()
     val homeContents: LiveData<HomeProducts> = _homeContents
 
+    private val _mainEventImage = MutableLiveData<String>()
+    val mainEventImage: LiveData<String> = _mainEventImage
+
     private val _homeContentsDetailList: MutableList<Details> = mutableListOf()
     private val _homeContentsDetail = MutableLiveData<MutableList<Details>>()
     val homeContentsDetail: LiveData<MutableList<Details>> = _homeContentsDetail
@@ -55,6 +58,7 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
             val loadHomeContentsJob = launch {
                 repository.loadHomeContents()?.let {
                     _homeContents.value = it
+                    _mainEventImage.value = (it.mainEvent.imgUploadPath + it.mainEvent.mobThumb)
                 }
             }
             loadHomeContentsJob.join()
