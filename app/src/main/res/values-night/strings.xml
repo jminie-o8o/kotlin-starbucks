@@ -4,4 +4,5 @@
     <string name="label_navigation_pay">페이</string>
     <string name="label_navigation_order">주문</string>
     <string name="label_navigation_favorite">선호상품</string>
+    <string name="label_what_new">What\'s new</string>
 </resources>

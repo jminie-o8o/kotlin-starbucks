@@ -45,7 +45,7 @@ class MainEventFragment : Fragment() {
         }
     }
 
-    fun moveToHomeFragment() {
+    private fun moveToHomeFragment() {
         findNavController().navigate(R.id.action_mainEventFragment_to_homeFragment)
     }
 }
