@@ -1,9 +1,6 @@
 package com.example.kotlin_starbucks.repository
 
-import com.example.kotlin_starbucks.model.EventImageContents
-import com.example.kotlin_starbucks.model.HomeProducts
-import com.example.kotlin_starbucks.model.ProductCd
-import com.example.kotlin_starbucks.model.YourRecommendProducts
+import com.example.kotlin_starbucks.model.*
 import javax.inject.Inject
 
 class Repository @Inject constructor(private val dataSource: DataSource) {
@@ -15,7 +12,11 @@ class Repository @Inject constructor(private val dataSource: DataSource) {
         return dataSource.loadHomeContents()
     }
 
-    suspend fun loadStarbucksContents(productCd: Long?): YourRecommendProducts? {
+    suspend fun loadStarbucksContents(productCd: Long?): YourRecommendProductsTitle? {
         return dataSource.loadStarbucksContents(productCd)
+    }
+
+    suspend fun loadStarbucksImages(productCd: Long?): YourRecommendProductsImage? {
+        return dataSource.loadStarbucksImages(productCd)
     }
 }

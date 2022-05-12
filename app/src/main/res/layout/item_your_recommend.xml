@@ -4,31 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="product"
-            type="com.example.kotlin_starbucks.model.File" />
+            type="com.example.kotlin_starbucks.model.YourRecommendProducts" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="250dp">
 
         <ImageView
             android:id="@+id/iv_your_recommend"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:layout_constraintStart_toStartOf="parent"
+            recommendImageUrl="@{product.imageUrl}"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:background="@drawable/item_image_shape"
+            android:clipToOutline="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/iv_your_recommend"
-            app:layout_constraintStart_toStartOf="parent"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{product.productName}"
+            android:textAlignment="center"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="@{product.productNM}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_your_recommend"
             tools:text="클래식 스콘" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,7 @@ object RetrofitObject {
     private const val event = "https://public.codesquad.kr/"
     private const val home = "https://api.codesquad.kr/"
     private const val starbucksInfo = "https://www.starbucks.co.kr/menu/"
+    const val baseImageUrl = "https://image.istarbucks.co.kr"
 
     private val okHttpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
