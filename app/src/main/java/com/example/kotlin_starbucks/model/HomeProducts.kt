@@ -14,7 +14,7 @@ data class HomeProducts(
 ) {
     data class Products(
         @SerializedName("products")
-        val products: List<String?>
+        val products: List<String>
     )
     data class MainEvent(
         @SerializedName("img_UPLOAD_PATH")
@@ -24,6 +24,6 @@ data class HomeProducts(
     )
     data class NowRecommend(
         @SerializedName("products")
-        val products: List<String?>
+        val products: List<String>
     )
 }

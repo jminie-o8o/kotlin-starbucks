@@ -18,8 +18,17 @@ fun setEventImageBitmap(view: ImageView, imageUrl: String?) {
 fun setRecommendImage(view: ImageView, imageUrl: String?) {
     if (!imageUrl.isNullOrEmpty()) {
         GlideApp.with(view)
-            .load(RetrofitObject.baseImageUrl + imageUrl)
+            .load(RetrofitObject.starbucksBaseImageUrl + imageUrl)
             .centerCrop()
+            .into(view)
+    }
+}
+
+@BindingAdapter("homeContentsImageUrl")
+fun setHomeEventsImage(view: ImageView, imageUrl: String?) {
+    if (!imageUrl.isNullOrEmpty()) {
+        GlideApp.with(view)
+            .load(RetrofitObject.starbucksBaseImageUrl + RetrofitObject.promotion + imageUrl)
             .into(view)
     }
 }

@@ -35,6 +35,11 @@ class HomeFragment : Fragment() {
             }
         }
 
+        binding.rvHomeEvents.adapter = HomeEventsAdapter().apply {
+            viewModel.homeEvents.observe(viewLifecycleOwner) {
+                submitList(it)
+            }
+        }
         return binding.root
     }
 }
