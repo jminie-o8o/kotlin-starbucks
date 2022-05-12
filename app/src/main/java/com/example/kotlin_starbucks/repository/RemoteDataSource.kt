@@ -27,6 +27,11 @@ class RemoteDataSource @Inject constructor() : DataSource {
         return response.getBodyOrNull()
     }
 
+    override suspend fun loadHomeEvents(key: String): HomeEvents? {
+        val response = RetrofitObject.starBucksInfo.loadHomeEvents(key)
+        return response.getBodyOrNull()
+    }
+
     private fun <T> Response<T>.getBodyOrNull(): T? {
         return if (this.isSuccessful) this.body() else null
     }

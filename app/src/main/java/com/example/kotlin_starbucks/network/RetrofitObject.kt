@@ -1,6 +1,5 @@
 package com.example.kotlin_starbucks.network
 
-import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -10,8 +9,9 @@ object RetrofitObject {
 
     private const val event = "https://public.codesquad.kr/"
     private const val home = "https://api.codesquad.kr/"
-    private const val starbucksInfo = "https://www.starbucks.co.kr/menu/"
-    const val baseImageUrl = "https://image.istarbucks.co.kr"
+    private const val starbucks = "https://www.starbucks.co.kr/"
+    const val starbucksBaseImageUrl = "https://image.istarbucks.co.kr/"
+    const val promotion = "upload/promotion/"
 
     private val okHttpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
@@ -38,7 +38,7 @@ object RetrofitObject {
 
     private val starBucksRetrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl(starbucksInfo)
+            .baseUrl(starbucks)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

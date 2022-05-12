@@ -11,4 +11,6 @@ interface DataSource {
     suspend fun loadStarbucksContents(productCd: Long?): YourRecommendProductsTitle?
 
     suspend fun loadStarbucksImages(productCd: Long?): YourRecommendProductsImage?
+
+    suspend fun loadHomeEvents(key: String): HomeEvents?
 }

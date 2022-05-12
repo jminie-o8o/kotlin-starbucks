@@ -1,5 +1,7 @@
 package com.example.kotlin_starbucks.ui
 
+import android.provider.CalendarContract
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -35,6 +37,9 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
     private val _yourRecommendProducts = MutableLiveData<MutableList<YourRecommendProducts>>()
     val yourRecommendProducts: LiveData<MutableList<YourRecommendProducts>> = _yourRecommendProducts
 
+    private val _homeEvents = MutableLiveData<List<HomeEvents.HomeEventsContents>>()
+    val homeEvents: LiveData<List<HomeEvents.HomeEventsContents>> = _homeEvents
+
     private val _error = SingleLiveEvent<ImageException>()
     val error: LiveData<ImageException> = _error
 
@@ -59,6 +64,7 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
                 repository.loadHomeContents()?.let {
                     _homeContents.value = it
                     _mainEventImage.value = (it.mainEvent.imgUploadPath + it.mainEvent.mobThumb)
+                    Log.d("사진", it.mainEvent.imgUploadPath + it.mainEvent.mobThumb)
                 }
             }
             loadHomeContentsJob.join()
@@ -66,7 +72,7 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
                 for (i in 0 until homeContents.value?.yourRecommend?.products?.size!!) {
                     val job1 = async {
                         val yourRecommendProducts =
-                            repository.loadStarbucksContents(homeContents.value?.yourRecommend?.products!![i]?.toLong())
+                            repository.loadStarbucksContents(homeContents.value?.yourRecommend?.products!![i].toLong())
                         yourRecommendProducts?.view?.let {
                             _homeContentsDetailList.add(it)
                             _homeContentsDetail.value = _homeContentsDetailList
@@ -74,7 +80,7 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
                     }
                     val job2 = async {
                         val recommendProductImage =
-                            repository.loadStarbucksImages(homeContents.value?.yourRecommend?.products!![i]?.toLong())
+                            repository.loadStarbucksImages(homeContents.value?.yourRecommend?.products!![i].toLong())
                         if (!recommendProductImage?.file.isNullOrEmpty()) {
                             recommendProductImage?.file?.get(0)?.filePATH.let {
                                 if (it != null) {
@@ -89,6 +95,9 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
                 }
             }.join()
             makeProductsList()
+            launch {
+                loadHomeEvents()
+            }
         }
     }
 
@@ -104,7 +113,11 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
         _yourRecommendProducts.value = _yourRecommendProductsList
     }
 
-    private fun <T> MutableLiveData<T>.notifyObserver() {
-        this.value = this.value
+    suspend fun loadHomeEvents() {
+        viewModelScope.launch {
+            repository.loadHomeEvents("all")?.let {
+                _homeEvents.value = it.list
+            }
+        }
     }
 }

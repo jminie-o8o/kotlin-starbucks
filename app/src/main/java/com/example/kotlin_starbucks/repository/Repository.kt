@@ -4,6 +4,7 @@ import com.example.kotlin_starbucks.model.*
 import javax.inject.Inject
 
 class Repository @Inject constructor(private val dataSource: DataSource) {
+
     suspend fun loadEventImageContents(): EventImageContents? {
         return dataSource.loadEventImageContents()
     }
@@ -18,5 +19,9 @@ class Repository @Inject constructor(private val dataSource: DataSource) {
 
     suspend fun loadStarbucksImages(productCd: Long?): YourRecommendProductsImage? {
         return dataSource.loadStarbucksImages(productCd)
+    }
+
+    suspend fun loadHomeEvents(key: String): HomeEvents? {
+        return dataSource.loadHomeEvents(key)
     }
 }
