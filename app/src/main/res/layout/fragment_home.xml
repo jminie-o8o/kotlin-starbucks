@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.kotlin_starbucks.ui.ViewModel" />
@@ -19,14 +20,14 @@
             android:id="@+id/tv_what_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_what_new"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="10dp"
-            tools:text="What's new"
+            android:layout_marginTop="20dp"
             android:drawableStart="@drawable/ic_baseline_local_post_office_20"
             android:drawablePadding="10dp"
+            android:text="@string/label_what_new"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="What's new" />
 
         <View
             android:id="@+id/view_first_line"
@@ -42,24 +43,32 @@
             android:id="@+id/tv_your_recommend_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:text="@{@string/your_recommend_title(viewModel.homeContents.displayName)}"
-            tools:text="얼음JK 님을 위한 추천메뉴"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_first_line"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp" />
+            tools:text="얼음JK 님을 위한 추천메뉴" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_your_recommend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            app:layout_constraintTop_toBottomOf="@+id/tv_your_recommend_title"
+            android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
-            android:orientation="horizontal" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_your_recommend_title" />
 
-
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            imageUrl="@{viewModel.mainEventImage}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_your_recommend" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
