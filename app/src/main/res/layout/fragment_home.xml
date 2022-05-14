@@ -30,6 +30,7 @@
 
                 <TextView
                     android:id="@+id/tv_what_new"
+                    style="@style/TextHeadline5.14.black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -55,9 +56,11 @@
                     android:id="@+id/tv_your_recommend_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    style="@style/Subtitle1.bold"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="@{@string/your_recommend_title(viewModel.homeContents.displayName)}"
+                    android:bufferType="spannable"
+                    homeTitle="@{viewModel.homeContents.displayName}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view_first_line"
                     tools:text="얼음JK 님을 위한 추천메뉴" />
@@ -88,7 +91,7 @@
                     android:id="@+id/rv_home_events"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="30dp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     android:nestedScrollingEnabled="false"

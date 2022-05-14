@@ -10,6 +10,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.kotlin_starbucks.R
 import com.example.kotlin_starbucks.databinding.FragmentHomeBinding
+import com.example.kotlin_starbucks.ui.listAdapter.HomeAdapter
+import com.example.kotlin_starbucks.ui.listAdapter.HomeEventsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

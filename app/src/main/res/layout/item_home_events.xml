@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="events"
             type="com.example.kotlin_starbucks.model.HomeEvents.HomeEventsContents" />
@@ -24,6 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            style="@style/Subtitle2.14.bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
