@@ -11,4 +11,5 @@
     <string name="close_event_page">닫기</string>
     <string name="label_what_new">What\'s new</string>
     <string name="your_recommend_title">%s 님을 위한 추천 메뉴</string>
+    <string name="your_recommend_title_example">님을 위한 추천 메뉴</string>
 </resources>

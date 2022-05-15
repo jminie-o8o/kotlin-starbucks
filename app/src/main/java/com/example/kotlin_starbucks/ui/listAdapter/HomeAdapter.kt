@@ -1,4 +1,4 @@
-package com.example.kotlin_starbucks.ui
+package com.example.kotlin_starbucks.ui.listAdapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,7 +13,8 @@ class HomeAdapter : ListAdapter<YourRecommendProducts, HomeAdapter.HomeHolder>(F
     private lateinit var binding: ItemYourRecommendBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeHolder {
-        binding = ItemYourRecommendBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding =
+            ItemYourRecommendBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HomeHolder(binding)
     }
 

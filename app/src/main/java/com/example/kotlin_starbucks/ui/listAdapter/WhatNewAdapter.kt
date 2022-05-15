@@ -1,4 +1,4 @@
-package com.example.kotlin_starbucks.ui
+package com.example.kotlin_starbucks.ui.listAdapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,28 +6,31 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlin_starbucks.databinding.ItemHomeEventsBinding
+import com.example.kotlin_starbucks.databinding.ItemWhatNewBinding
 import com.example.kotlin_starbucks.model.HomeEvents
 
-class HomeEventsAdapter :
-    ListAdapter<HomeEvents.HomeEventsContents, HomeEventsAdapter.HomeEventsHolder>(HomeEventsDiffCallBack) {
+class WhatNewAdapter :
+    ListAdapter<HomeEvents.HomeEventsContents, WhatNewAdapter.WhatNewEventsHolder>(
+        HomeEventsDiffCallBack
+    ) {
 
-    private lateinit var binding: ItemHomeEventsBinding
+    private lateinit var binding: ItemWhatNewBinding
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeEventsHolder {
-        binding = ItemHomeEventsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return HomeEventsHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WhatNewEventsHolder {
+        binding = ItemWhatNewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return WhatNewEventsHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: HomeEventsHolder, position: Int) {
+    override fun onBindViewHolder(holder: WhatNewEventsHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class HomeEventsHolder(private val binding: ItemHomeEventsBinding) :
+    class WhatNewEventsHolder(private val binding: ItemWhatNewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-            fun bind(events: HomeEvents.HomeEventsContents) {
-                binding.events = events
-                binding.executePendingBindings()
-            }
+        fun bind(events: HomeEvents.HomeEventsContents) {
+            binding.events = events
+            binding.executePendingBindings()
+        }
     }
 
     object HomeEventsDiffCallBack: DiffUtil.ItemCallback<HomeEvents.HomeEventsContents>() {

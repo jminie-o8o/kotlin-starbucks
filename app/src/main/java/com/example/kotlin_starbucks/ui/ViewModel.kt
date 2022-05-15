@@ -1,6 +1,5 @@
 package com.example.kotlin_starbucks.ui
 
-import android.provider.CalendarContract
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -64,7 +63,6 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
                 repository.loadHomeContents()?.let {
                     _homeContents.value = it
                     _mainEventImage.value = (it.mainEvent.imgUploadPath + it.mainEvent.mobThumb)
-                    Log.d("사진", it.mainEvent.imgUploadPath + it.mainEvent.mobThumb)
                 }
             }
             loadHomeContentsJob.join()
