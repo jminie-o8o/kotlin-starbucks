@@ -24,11 +24,9 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
     private val _mainEventImage = MutableLiveData<String>()
     val mainEventImage: LiveData<String> = _mainEventImage
 
-    private val _homeContentsDetailList: MutableList<Details> = mutableListOf()
     private val _homeContentsDetail = MutableLiveData<MutableList<Details>>()
     val homeContentsDetail: LiveData<MutableList<Details>> = _homeContentsDetail
 
-    private val _homeContentsDetailImageList: MutableList<String> = mutableListOf()
     private val _homeContentsDetailImage = MutableLiveData<MutableList<String>>()
     val homeContentsDetailImage: LiveData<MutableList<String>> = _homeContentsDetailImage
 
@@ -72,8 +70,7 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
                         val yourRecommendProducts =
                             repository.loadStarbucksContents(homeContents.value?.yourRecommend?.products!![i].toLong())
                         yourRecommendProducts?.view?.let {
-                            _homeContentsDetailList.add(it)
-                            _homeContentsDetail.value = _homeContentsDetailList
+                            _homeContentsDetail.setList(it)
                         }
                     }
                     val job2 = async {
@@ -82,8 +79,7 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
                         if (!recommendProductImage?.file.isNullOrEmpty()) {
                             recommendProductImage?.file?.get(0)?.filePATH.let {
                                 if (it != null) {
-                                    _homeContentsDetailImageList.add(it)
-                                    _homeContentsDetailImage.value = _homeContentsDetailImageList
+                                    _homeContentsDetailImage.setList(it)
                                 }
                             }
                         }
@@ -100,7 +96,7 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
     }
 
     private fun makeProductsList() {
-        for (index in 0 until _homeContentsDetailList.size) {
+        for (index in 0 until (_homeContentsDetail.value?.size ?: 0)) {
             _yourRecommendProductsList.add(
                 YourRecommendProducts(
                     _homeContentsDetail.value?.get(index)?.productNM,
@@ -117,5 +113,12 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
                 _homeEvents.value = it.list
             }
         }
+    }
+
+    private fun <E> MutableLiveData<MutableList<E>>.setList(element: E) {
+        val tempList: MutableList<E> = mutableListOf()
+        this.value?.let { tempList.addAll(it) }
+        tempList.add(element)
+        this.value = tempList
     }
 }
