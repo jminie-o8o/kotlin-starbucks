@@ -64,28 +64,40 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
                 }
             }
             loadHomeContentsJob.join()
-            launch {
+            launch(ceh) {
                 for (i in 0 until homeContents.value?.yourRecommend?.products?.size!!) {
-                    val job1 = async {
-                        val yourRecommendProducts =
-                            repository.loadStarbucksContents(homeContents.value?.yourRecommend?.products!![i].toLong())
-                        yourRecommendProducts?.view?.let {
-                            _homeContentsDetail.setList(it)
+                    val element = homeContents.value?.yourRecommend?.products!![i].toLong()
+                    val yourRecommendProducts = async { repository.loadStarbucksContents(element) }
+                    val recommendProductImage = async { repository.loadStarbucksImages(element) }
+                    val result1 = yourRecommendProducts.await()
+                    val result2 = recommendProductImage.await()
+                    safeLet(result1, result2) { element1, element2 ->
+                        _homeContentsDetail.setList(element1.view)
+                        if (!element2.file.isNullOrEmpty()){
+                            _homeContentsDetailImage.setList(element2.file[0].filePATH)
                         }
                     }
-                    val job2 = async {
-                        val recommendProductImage =
-                            repository.loadStarbucksImages(homeContents.value?.yourRecommend?.products!![i].toLong())
-                        if (!recommendProductImage?.file.isNullOrEmpty()) {
-                            recommendProductImage?.file?.get(0)?.filePATH.let {
-                                if (it != null) {
-                                    _homeContentsDetailImage.setList(it)
-                                }
-                            }
-                        }
-                    }
-                    job1.await()
-                    job2.await()
+
+//                    val job1 = async {
+//                        val yourRecommendProducts =
+//                            repository.loadStarbucksContents(homeContents.value?.yourRecommend?.products!![i].toLong())
+//                        yourRecommendProducts?.view?.let {
+//                            _homeContentsDetail.setList(it)
+//                        }
+//                    }
+//                    val job2 = async {
+//                        val recommendProductImage =
+//                            repository.loadStarbucksImages(homeContents.value?.yourRecommend?.products!![i].toLong())
+//                        if (!recommendProductImage?.file.isNullOrEmpty()) {
+//                            recommendProductImage?.file?.get(0)?.filePATH.let {
+//                                if (it != null) {
+//                                    _homeContentsDetailImage.setList(it)
+//                                }
+//                            }
+//                        }
+//                    }
+//                    job1.await()
+//                    job2.await()
                 }
             }.join()
             makeProductsList()
@@ -107,7 +119,7 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
         _yourRecommendProducts.value = _yourRecommendProductsList
     }
 
-    suspend fun loadHomeEvents() {
+    private suspend fun loadHomeEvents() {
         viewModelScope.launch {
             repository.loadHomeEvents("all")?.let {
                 _homeEvents.value = it.list
@@ -115,10 +127,20 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
         }
     }
 
-    private fun <E> MutableLiveData<MutableList<E>>.setList(element: E) {
+    private fun <E> MutableLiveData<MutableList<E>>.setList(element: E?) {
         val tempList: MutableList<E> = mutableListOf()
         this.value?.let { tempList.addAll(it) }
-        tempList.add(element)
+        if(element != null) {
+            tempList.add(element)
+        }
         this.value = tempList
+    }
+
+    private inline fun <T1, T2, R> safeLet(
+        p1: T1?,
+        p2: T2?,
+        block: (T1, T2) -> R?
+    ) {
+        if (p1 != null && p2 != null) block(p1, p2)
     }
 }
