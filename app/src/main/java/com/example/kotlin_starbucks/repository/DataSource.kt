@@ -9,9 +9,9 @@ interface DataSource {
 
     suspend fun loadHomeContents(): Flow<HomeProducts?>
 
-    suspend fun loadStarbucksContents(productCd: Long?): YourRecommendProductsTitle?
+    suspend fun loadStarbucksContents(productCd: Long?): Flow<YourRecommendProductsTitle?>
 
-    suspend fun loadStarbucksImages(productCd: Long?): YourRecommendProductsImage?
+    suspend fun loadStarbucksImages(productCd: Long?): Flow<YourRecommendProductsImage?>
 
-    suspend fun loadHomeEvents(key: String): HomeEvents?
+    suspend fun loadHomeEvents(key: String): Flow<HomeEvents?>
 }

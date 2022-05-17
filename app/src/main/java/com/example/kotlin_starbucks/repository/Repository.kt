@@ -14,15 +14,15 @@ class Repository @Inject constructor(private val dataSource: DataSource) {
         return dataSource.loadHomeContents()
     }
 
-    suspend fun loadStarbucksContents(productCd: Long?): YourRecommendProductsTitle? {
+    suspend fun loadStarbucksContents(productCd: Long?): Flow<YourRecommendProductsTitle?> {
         return dataSource.loadStarbucksContents(productCd)
     }
 
-    suspend fun loadStarbucksImages(productCd: Long?): YourRecommendProductsImage? {
+    suspend fun loadStarbucksImages(productCd: Long?): Flow<YourRecommendProductsImage?> {
         return dataSource.loadStarbucksImages(productCd)
     }
 
-    suspend fun loadHomeEvents(key: String): HomeEvents? {
+    suspend fun loadHomeEvents(key: String): Flow<HomeEvents?> {
         return dataSource.loadHomeEvents(key)
     }
 }

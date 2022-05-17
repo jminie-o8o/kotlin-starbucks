@@ -22,19 +22,19 @@ class RemoteDataSource @Inject constructor() : DataSource {
         }
     }
 
-    override suspend fun loadStarbucksContents(productCd: Long?): YourRecommendProductsTitle? {
+    override suspend fun loadStarbucksContents(productCd: Long?): Flow<YourRecommendProductsTitle?> {
         val response = RetrofitObject.starBucksInfo.loadStarbucksContents(productCd)
-        return response.getBodyOrNull()
+        return flow { emit(response.getBodyOrNull()) }
     }
 
-    override suspend fun loadStarbucksImages(productCd: Long?): YourRecommendProductsImage? {
+    override suspend fun loadStarbucksImages(productCd: Long?): Flow<YourRecommendProductsImage?> {
         val response = RetrofitObject.starBucksInfo.loadStarbucksContentsImage(productCd)
-        return response.getBodyOrNull()
+        return flow { emit(response.getBodyOrNull()) }
     }
 
-    override suspend fun loadHomeEvents(key: String): HomeEvents? {
+    override suspend fun loadHomeEvents(key: String): Flow<HomeEvents?> {
         val response = RetrofitObject.starBucksInfo.loadHomeEvents(key)
-        return response.getBodyOrNull()
+        return flow { emit(response.getBodyOrNull()) }
     }
 
     private fun <T> Response<T>.getBodyOrNull(): T? {
