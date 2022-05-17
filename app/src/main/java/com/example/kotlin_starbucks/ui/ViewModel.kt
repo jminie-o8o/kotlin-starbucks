@@ -1,5 +1,6 @@
 package com.example.kotlin_starbucks.ui
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,9 +10,7 @@ import com.example.kotlin_starbucks.repository.Repository
 import com.example.kotlin_starbucks.ui.common.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,11 +25,11 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
     private val _mainEventImage: MutableStateFlow<String> = MutableStateFlow("")
     val mainEventImage: StateFlow<String> = _mainEventImage
 
-    private val _homeContentsDetail = MutableLiveData<MutableList<Details>>()
-    val homeContentsDetail: LiveData<MutableList<Details>> = _homeContentsDetail
+    private val _homeContentsDetail = MutableStateFlow<MutableList<Details>>(mutableListOf())
+    private val homeContentsDetail: StateFlow<MutableList<Details>> = _homeContentsDetail
 
-    private val _homeContentsDetailImage = MutableLiveData<MutableList<String>>()
-    val homeContentsDetailImage: LiveData<MutableList<String>> = _homeContentsDetailImage
+    private val _homeContentsDetailImage = MutableStateFlow<MutableList<String>>(mutableListOf())
+    private val homeContentsDetailImage: StateFlow<MutableList<String>> = _homeContentsDetailImage
 
     private val _yourRecommendProductsList: MutableList<YourRecommendProducts> = mutableListOf()
     private val _yourRecommendProducts = MutableLiveData<MutableList<YourRecommendProducts>>()
@@ -61,23 +60,24 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
         viewModelScope.launch {
             launch {
                 repository.loadHomeContents().collect { homeContents ->
-                    _homeContents.value  = homeContents
-                    _mainEventImage.value = homeContents?.mainEvent?.imgUploadPath + homeContents?.mainEvent?.mobThumb
+                    _homeContents.value = homeContents
+                    _mainEventImage.value =
+                        homeContents?.mainEvent?.imgUploadPath + homeContents?.mainEvent?.mobThumb
                 }
             }.join()
             launch(ceh) {
                 for (i in 0 until homeContents.value?.yourRecommend?.products?.size!!) {
                     val element = homeContents.value?.yourRecommend?.products!![i].toLong()
-                    val yourRecommendProducts = async { repository.loadStarbucksContents(element) }
-                    val recommendProductImage = async { repository.loadStarbucksImages(element) }
-                    val result1 = yourRecommendProducts.await()
-                    val result2 = recommendProductImage.await()
-                    safeLet(result1, result2) { element1, element2 ->
-                        _homeContentsDetail.setList(element1.view)
-                        if (!element2.file.isNullOrEmpty()){
-                            _homeContentsDetailImage.setList(element2.file[0].filePATH)
+                    val yourRecommendProducts = repository.loadStarbucksContents(element)
+                    val recommendProductImage = repository.loadStarbucksImages(element)
+                    yourRecommendProducts.zip(recommendProductImage) { element1, element2 ->
+                        safeLet(element1, element2) { safeElement1, safeElement2 ->
+                            _homeContentsDetail.setList(safeElement1.view)
+                            if (!safeElement2.file.isNullOrEmpty()) {
+                                _homeContentsDetailImage.setList(safeElement2.file[0].filePATH)
+                            }
                         }
-                    }
+                    }.collect()
                 }
             }.join()
             makeProductsList()
@@ -88,11 +88,11 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
     }
 
     private fun makeProductsList() {
-        for (index in 0 until (_homeContentsDetail.value?.size ?: 0)) {
+        for (index in 0 until (_homeContentsDetail.value.size ?: 0)) {
             _yourRecommendProductsList.add(
                 YourRecommendProducts(
-                    _homeContentsDetail.value?.get(index)?.productNM,
-                    _homeContentsDetailImage.value?.get(index)
+                    homeContentsDetail.value[index].productNM,
+                    homeContentsDetailImage.value[index]
                 )
             )
         }
@@ -107,10 +107,10 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
         }
     }
 
-    private fun <E> MutableLiveData<MutableList<E>>.setList(element: E?) {
+    private fun <E> MutableStateFlow<MutableList<E>>.setList(element: E?) {
         val tempList: MutableList<E> = mutableListOf()
-        this.value?.let { tempList.addAll(it) }
-        if(element != null) {
+        this.value.let { tempList.addAll(it) }
+        if (element != null) {
             tempList.add(element)
         }
         this.value = tempList
