@@ -7,12 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.kotlin_starbucks.R
 import com.example.kotlin_starbucks.databinding.FragmentHomeBinding
 import com.example.kotlin_starbucks.ui.listAdapter.HomeAdapter
 import com.example.kotlin_starbucks.ui.listAdapter.HomeEventsAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -32,14 +37,22 @@ class HomeFragment : Fragment() {
         }
 
         binding.rvYourRecommend.adapter = HomeAdapter().apply {
-            viewModel.yourRecommendProducts.observe(viewLifecycleOwner) {
-                submitList(it)
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.yourRecommendProducts.collect {
+                        submitList(it)
+                    }
+                }
             }
         }
 
         binding.rvHomeEvents.adapter = HomeEventsAdapter().apply {
-            viewModel.homeEvents.observe(viewLifecycleOwner) {
-                submitList(it)
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.homeEvents.collect {
+                        submitList(it)
+                    }
+                }
             }
         }
         return binding.root

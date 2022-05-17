@@ -32,11 +32,14 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
     private val homeContentsDetailImage: StateFlow<MutableList<String>> = _homeContentsDetailImage
 
     private val _yourRecommendProductsList: MutableList<YourRecommendProducts> = mutableListOf()
-    private val _yourRecommendProducts = MutableLiveData<MutableList<YourRecommendProducts>>()
-    val yourRecommendProducts: LiveData<MutableList<YourRecommendProducts>> = _yourRecommendProducts
+    private val _yourRecommendProducts = MutableStateFlow<MutableList<YourRecommendProducts>>(
+        mutableListOf()
+    )
+    val yourRecommendProducts: StateFlow<MutableList<YourRecommendProducts>> =
+        _yourRecommendProducts
 
-    private val _homeEvents = MutableLiveData<List<HomeEvents.HomeEventsContents>>()
-    val homeEvents: LiveData<List<HomeEvents.HomeEventsContents>> = _homeEvents
+    private val _homeEvents = MutableStateFlow<List<HomeEvents.HomeEventsContents>?>(listOf())
+    val homeEvents: StateFlow<List<HomeEvents.HomeEventsContents>?> = _homeEvents
 
     private val _error = SingleLiveEvent<ImageException>()
     val error: LiveData<ImageException> = _error
@@ -101,8 +104,8 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
 
     private suspend fun loadHomeEvents() {
         viewModelScope.launch {
-            repository.loadHomeEvents("all")?.let {
-                _homeEvents.value = it.list
+            repository.loadHomeEvents("all").collect {
+                _homeEvents.value = it?.list
             }
         }
     }

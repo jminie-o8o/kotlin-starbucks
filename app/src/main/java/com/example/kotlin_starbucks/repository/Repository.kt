@@ -22,7 +22,7 @@ class Repository @Inject constructor(private val dataSource: DataSource) {
         return dataSource.loadStarbucksImages(productCd)
     }
 
-    suspend fun loadHomeEvents(key: String): HomeEvents? {
+    suspend fun loadHomeEvents(key: String): Flow<HomeEvents?> {
         return dataSource.loadHomeEvents(key)
     }
 }

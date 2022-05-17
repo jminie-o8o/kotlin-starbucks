@@ -7,11 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.kotlin_starbucks.R
 import com.example.kotlin_starbucks.databinding.FragmentHomeBinding
 import com.example.kotlin_starbucks.databinding.FragmentWhatsNewBinding
 import com.example.kotlin_starbucks.ui.listAdapter.WhatNewAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class WhatsNewFragment : Fragment() {
@@ -26,8 +31,12 @@ class WhatsNewFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_whats_new, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.rvWhatNew.adapter = WhatNewAdapter().apply {
-            viewModel.homeEvents.observe(viewLifecycleOwner) {
-                submitList(it)
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.homeEvents.collect {
+                        submitList(it)
+                    }
+                }
             }
         }
         return binding.root
