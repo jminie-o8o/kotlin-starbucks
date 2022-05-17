@@ -31,12 +31,8 @@ class WhatsNewFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_whats_new, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.rvWhatNew.adapter = WhatNewAdapter().apply {
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.homeEvents.collect {
-                        submitList(it)
-                    }
-                }
+            viewModel.homeEvents.observe(viewLifecycleOwner) {
+                submitList(it)
             }
         }
         return binding.root
