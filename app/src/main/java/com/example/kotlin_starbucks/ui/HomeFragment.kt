@@ -37,24 +37,17 @@ class HomeFragment : Fragment() {
         }
 
         binding.rvYourRecommend.adapter = HomeAdapter().apply {
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.yourRecommendProducts.collect {
-                        submitList(it)
-                    }
-                }
+            viewModel.yourRecommendProducts.observe(viewLifecycleOwner) {
+                submitList(it)
             }
         }
 
         binding.rvHomeEvents.adapter = HomeEventsAdapter().apply {
-            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.homeEvents.collect {
-                        submitList(it)
-                    }
-                }
+            viewModel.homeEvents.observe(viewLifecycleOwner) {
+                submitList(it)
             }
         }
+
         return binding.root
     }
 }

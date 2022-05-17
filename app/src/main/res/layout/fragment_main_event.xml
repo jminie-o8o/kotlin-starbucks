@@ -10,10 +10,6 @@
             type="com.example.kotlin_starbucks.model.EventImage" />
 
         <variable
-            name="mainEventFragment"
-            type="com.example.kotlin_starbucks.ui.MainEventFragment" />
-
-        <variable
             name="viewModel"
             type="com.example.kotlin_starbucks.ui.ViewModel" />
     </data>
@@ -37,11 +33,11 @@
                 android:layout_centerHorizontal="true" />
 
             <TextView
-                android:layout_marginTop="60dp"
                 android:id="@+id/tv_event_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="60dp"
                 android:text="@{viewModel.eventImageContents.title}"
                 tools:text="스타벅스" />
 
