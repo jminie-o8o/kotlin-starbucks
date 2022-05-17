@@ -1,12 +1,13 @@
 package com.example.kotlin_starbucks.repository
 
 import com.example.kotlin_starbucks.model.*
+import kotlinx.coroutines.flow.Flow
 
 interface DataSource {
 
-    suspend fun loadEventImageContents(): EventImageContents?
+    suspend fun loadEventImageContents(): Flow<EventImageContents?>
 
-    suspend fun loadHomeContents(): HomeProducts?
+    suspend fun loadHomeContents(): Flow<HomeProducts?>
 
     suspend fun loadStarbucksContents(productCd: Long?): YourRecommendProductsTitle?
 
