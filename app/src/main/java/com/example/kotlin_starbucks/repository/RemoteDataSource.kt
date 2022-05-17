@@ -1,20 +1,25 @@
 package com.example.kotlin_starbucks.repository
 
-import android.util.Log
 import com.example.kotlin_starbucks.model.*
 import com.example.kotlin_starbucks.network.RetrofitObject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import retrofit2.Response
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor() : DataSource {
-    override suspend fun loadEventImageContents(): EventImageContents? {
+    override suspend fun loadEventImageContents(): Flow<EventImageContents?> {
         val response = RetrofitObject.codeSquadService.loadEventImageContents()
-        return response.getBodyOrNull()
+        return flow {
+            emit(response.getBodyOrNull())
+        }
     }
 
-    override suspend fun loadHomeContents(): HomeProducts? {
+    override suspend fun loadHomeContents(): Flow<HomeProducts?> {
         val response = RetrofitObject.codeSquadApi.loadHomeContents()
-        return response.getBodyOrNull()
+        return flow {
+            emit(response.getBodyOrNull())
+        }
     }
 
     override suspend fun loadStarbucksContents(productCd: Long?): YourRecommendProductsTitle? {

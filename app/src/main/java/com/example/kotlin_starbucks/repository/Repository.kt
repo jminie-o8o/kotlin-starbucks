@@ -1,15 +1,16 @@
 package com.example.kotlin_starbucks.repository
 
 import com.example.kotlin_starbucks.model.*
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class Repository @Inject constructor(private val dataSource: DataSource) {
 
-    suspend fun loadEventImageContents(): EventImageContents? {
+    suspend fun loadEventImageContents(): Flow<EventImageContents?> {
         return dataSource.loadEventImageContents()
     }
 
-    suspend fun loadHomeContents(): HomeProducts? {
+    suspend fun loadHomeContents(): Flow<HomeProducts?> {
         return dataSource.loadHomeContents()
     }
 
