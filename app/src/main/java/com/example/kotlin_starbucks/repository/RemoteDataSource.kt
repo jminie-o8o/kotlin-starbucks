@@ -38,6 +38,6 @@ class RemoteDataSource @Inject constructor() : DataSource {
     }
 
     private fun <T> Response<T>.getBodyOrNull(): T? {
-        return if (this.isSuccessful) this.body() else null
+        return if (this.isSuccessful) this.body() else throw IllegalStateException()
     }
 }
