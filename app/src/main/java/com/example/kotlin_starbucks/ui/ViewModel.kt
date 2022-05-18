@@ -1,6 +1,5 @@
 package com.example.kotlin_starbucks.ui
 
-import android.util.Log
 import androidx.lifecycle.*
 import androidx.lifecycle.ViewModel
 import com.example.kotlin_starbucks.model.*
@@ -30,12 +29,12 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
     private val homeContentsDetailImage: StateFlow<MutableList<String>> = _homeContentsDetailImage
 
     private val _yourRecommendProducts =
-        MutableLiveData<MutableList<YourRecommendProducts>>()
+        MutableStateFlow<MutableList<YourRecommendProducts>>(mutableListOf())
     val yourRecommendProducts: LiveData<MutableList<YourRecommendProducts>> =
-        _yourRecommendProducts
+        _yourRecommendProducts.asLiveData()
 
-    private val _homeEvents = MutableLiveData<List<HomeEvents.HomeEventsContents>?>()
-    val homeEvents: LiveData<List<HomeEvents.HomeEventsContents>?> = _homeEvents
+    private val _homeEvents = MutableStateFlow<List<HomeEvents.HomeEventsContents>?>(mutableListOf())
+    val homeEvents: LiveData<List<HomeEvents.HomeEventsContents>?> = _homeEvents.asLiveData()
 
     private val _error = SingleLiveEvent<ImageException>()
     val error: LiveData<ImageException> = _error
@@ -87,7 +86,7 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
     }
 
     private fun makeProductsList() {
-        for (index in 0 until (_homeContentsDetail.value.size ?: 0)) {
+        for (index in 0 until (_homeContentsDetail.value.size)) {
             _yourRecommendProducts.setList(
                 YourRecommendProducts(
                     homeContentsDetail.value[index].productNM,
