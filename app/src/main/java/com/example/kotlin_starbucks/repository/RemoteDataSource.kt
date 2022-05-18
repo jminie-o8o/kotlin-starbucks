@@ -5,6 +5,8 @@ import com.example.kotlin_starbucks.network.RetrofitObject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response
+import java.lang.Exception
+import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor() : DataSource {
@@ -38,6 +40,6 @@ class RemoteDataSource @Inject constructor() : DataSource {
     }
 
     private fun <T> Response<T>.getBodyOrNull(): T? {
-        return if (this.isSuccessful) this.body() else null
+        return if (this.isSuccessful) this.body() else throw Exception()
     }
 }
