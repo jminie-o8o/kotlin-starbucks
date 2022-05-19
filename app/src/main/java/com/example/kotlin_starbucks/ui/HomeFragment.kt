@@ -18,6 +18,7 @@ import com.example.kotlin_starbucks.databinding.FragmentHomeBinding
 import com.example.kotlin_starbucks.ui.common.ProgressDialog
 import com.example.kotlin_starbucks.ui.common.UiState
 import com.example.kotlin_starbucks.ui.common.clicks
+import com.example.kotlin_starbucks.ui.common.throttleFirst
 import com.example.kotlin_starbucks.ui.listAdapter.HomeAdapter
 import com.example.kotlin_starbucks.ui.listAdapter.HomeEventsAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +31,6 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: ViewModel by activityViewModels()
-    private var btnClicked = 0
 
     @OptIn(FlowPreview::class)
     override fun onCreateView(
@@ -77,14 +77,8 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.btnCheckDebounce.clicks().sample(2000).onEach {
-            if(btnClicked % 2 == 0) {
-                this.view?.isSelected = false
-                btnClicked++
-                return@onEach
-            }
-            btnClicked++
-            this.view?.isSelected = true
+        binding.btnCheckDebounce.clicks().throttleFirst(3000).onEach {
+            this.view?.isSelected = this.view?.isSelected != true
         }.launchIn(lifecycleScope)
     }
 }
