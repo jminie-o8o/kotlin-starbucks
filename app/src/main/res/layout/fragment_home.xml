@@ -20,8 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,6 +42,17 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="What's new" />
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_check_debounce"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/item_select_button"
+                    app:layout_constraintStart_toEndOf="@id/tv_what_new"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
                 <View
                     android:id="@+id/view_first_line"
                     android:layout_width="0dp"
@@ -54,13 +65,13 @@
 
                 <TextView
                     android:id="@+id/tv_your_recommend_title"
+                    style="@style/Subtitle1.bold"
+                    homeTitle="@{viewModel.homeContents.displayName}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Subtitle1.bold"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:bufferType="spannable"
-                    homeTitle="@{viewModel.homeContents.displayName}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view_first_line"
                     tools:text="얼음JK 님을 위한 추천메뉴" />
@@ -69,9 +80,9 @@
                     android:id="@+id/rv_your_recommend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    android:nestedScrollingEnabled="false"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_your_recommend_title" />
 
@@ -92,9 +103,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
+                    android:nestedScrollingEnabled="false"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    android:nestedScrollingEnabled="false"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/iv_home_center_image" />
 

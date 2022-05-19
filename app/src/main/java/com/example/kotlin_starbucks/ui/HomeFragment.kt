@@ -20,7 +20,8 @@ import com.example.kotlin_starbucks.ui.common.UiState
 import com.example.kotlin_starbucks.ui.listAdapter.HomeAdapter
 import com.example.kotlin_starbucks.ui.listAdapter.HomeEventsAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -28,7 +29,9 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: ViewModel by activityViewModels()
+    private var btnClicked = 0
 
+    @OptIn(FlowPreview::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,5 +72,17 @@ class HomeFragment : Fragment() {
                 submitList(it)
             }
         }
+
+        binding.btnCheckDebounce.clicks().sample(2000).onEach {
+            if(btnClicked % 2 == 0) {
+                this.view?.isSelected = false
+                btnClicked++
+                return@onEach
+            }
+            btnClicked++
+            this.view?.isSelected = true
+        }.launchIn(lifecycleScope)
+
+        return binding.root
     }
 }
