@@ -17,6 +17,7 @@ import com.example.kotlin_starbucks.R
 import com.example.kotlin_starbucks.databinding.FragmentHomeBinding
 import com.example.kotlin_starbucks.ui.common.ProgressDialog
 import com.example.kotlin_starbucks.ui.common.UiState
+import com.example.kotlin_starbucks.ui.common.clicks
 import com.example.kotlin_starbucks.ui.listAdapter.HomeAdapter
 import com.example.kotlin_starbucks.ui.listAdapter.HomeEventsAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +43,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = HomeAdapter()
         val dialog = ProgressDialog(requireContext())
@@ -57,10 +59,12 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+
         viewModel.error.observe(viewLifecycleOwner) {
             Log.d("에러", it.errorMessage)
             Toast.makeText(requireContext(), "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
         }
+
         binding.tvWhatNew.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_home_to_whatsNewFragment)
         }
@@ -82,7 +86,5 @@ class HomeFragment : Fragment() {
             btnClicked++
             this.view?.isSelected = true
         }.launchIn(lifecycleScope)
-
-        return binding.root
     }
 }
