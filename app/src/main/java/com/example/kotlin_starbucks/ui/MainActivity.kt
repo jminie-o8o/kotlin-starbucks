@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.kotlin_starbucks.R
@@ -24,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         viewModel.loadEventImageContents()
-        viewModel.loadHomeContents()
+        viewModel.setHomeContents()
         setupNav()
     }
 

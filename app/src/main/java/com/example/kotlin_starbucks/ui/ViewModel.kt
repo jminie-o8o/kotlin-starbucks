@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import androidx.lifecycle.ViewModel
 import com.example.kotlin_starbucks.model.*
 import com.example.kotlin_starbucks.repository.Repository
-import com.example.kotlin_starbucks.ui.common.SingleLiveEvent
 import com.example.kotlin_starbucks.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -16,6 +15,14 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
 
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.Loading)
     val uiState: LiveData<UiState> = _uiState.asLiveData()
+
+    private val _loadHomeContentsUiState: MutableStateFlow<UiState> =
+        MutableStateFlow(UiState.Loading)
+    val loadHomeContentsUiState: LiveData<UiState> = _loadHomeContentsUiState.asLiveData()
+
+    private val _loadHomeEventsUiState: MutableStateFlow<UiState> =
+        MutableStateFlow(UiState.Loading)
+    val loadHomeEventsUiState: LiveData<UiState> = _loadHomeEventsUiState.asLiveData()
 
     private val _eventImageContents: MutableStateFlow<EventImageContents?> = MutableStateFlow(null)
     val eventImageContents: StateFlow<EventImageContents?> = _eventImageContents
@@ -44,29 +51,22 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
     private val _error = MutableLiveData<FlowException>()
     val error: LiveData<FlowException> = _error
 
-    private val ceh = CoroutineExceptionHandler { _, throwable ->
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.stackTrace
         _error.value = FlowException(throwable, "오류가 발생했습니다.")
     }
 
     fun loadEventImageContents() {
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineExceptionHandler) {
             repository.loadEventImageContents().collect { imageContents ->
                 _eventImageContents.value = imageContents
             }
         }
     }
 
-    fun loadHomeContents() {
-        viewModelScope.launch(ceh) {
-            launch {
-                repository.loadHomeContents().collect { homeContents ->
-                    _homeContents.value = homeContents
-                    _mainEventImage.value =
-                        homeContents?.mainEvent?.imgUploadPath + homeContents?.mainEvent?.mobThumb
-                    _uiState.value = UiState.Success
-                }
-            }.join()
+    fun setHomeContents() {
+        viewModelScope.launch(coroutineExceptionHandler) {
+            launch { loadHomeContents() }.join()
             launch {
                 _uiState.value = UiState.Loading
                 for (i in 0 until homeContents.value?.yourRecommend?.products?.size!!) {
@@ -92,6 +92,18 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
         }
     }
 
+    private suspend fun loadHomeContents() {
+        repository.loadHomeContents()
+            .onStart {
+                _loadHomeContentsUiState.value = UiState.Loading
+            }.collect { homeContents ->
+                _homeContents.value = homeContents
+                _mainEventImage.value =
+                    homeContents?.mainEvent?.imgUploadPath + homeContents?.mainEvent?.mobThumb
+                _loadHomeContentsUiState.value = UiState.Success
+            }
+    }
+
     private fun makeProductsList() {
         for (index in 0 until (_homeContentsDetail.value.size)) {
             _yourRecommendProducts.setList(
@@ -104,14 +116,14 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
     }
 
     private suspend fun loadHomeEvents() {
-        viewModelScope.launch(ceh) {
-            repository.loadHomeEvents("all").onStart {
-                _uiState.value = UiState.Loading
-            }.onCompletion {
-                _uiState.value = UiState.Success
-            }.collect {
-                _homeEvents.value = it?.list
-            }
+        viewModelScope.launch(coroutineExceptionHandler) {
+            repository.loadHomeEvents("all")
+                .onStart {
+                    _loadHomeEventsUiState.value = UiState.Loading
+                }.collect {
+                    _homeEvents.value = it?.list
+                    _loadHomeEventsUiState.value = UiState.Success
+                }
         }
     }
 
